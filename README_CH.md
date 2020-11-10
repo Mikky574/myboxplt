@@ -1,12 +1,12 @@
-<font size="8">Code interpretation of myplt box diagram</font><br />
+<font size="8">myplt箱线图代码解释</font><br />
 
 ---
 
-Myplt box diagram operation code explanation document and instruction
+myplt箱线图作业代码解释文件兼使用说明
 
-Introduction: the `myplt` class of boxplot can be roughly divided into three main code blocks, `info_boxplot()`, `histobox_plot()` and `creative_ boxplot()`. I will introduce it in four parts.
+简介：箱线图myplt类大体分为三个主要代码块，info_boxplot（），histobox_plot（）和creative_boxplot（）。介绍我会分四部分介绍。
 
-the package needed
+import的包
 
 ```python
 #!/usr/bin/python3
@@ -20,19 +20,22 @@ import numpy as np
 
 # Table of Contents
 
-[TOC]
+> 1. [功能性代码解释](#功能性代码解释)
+> 2. [info_boxplot()解释以及绘图逻辑结构图](#info_boxplot解释以及绘图逻辑结构图)
+> 3. [histobox_plot()解释以及绘图逻辑结构图](#histobox_plot解释以及绘图逻辑结构图)
+> 4. [creative_boxplot()解释以及绘图逻辑结构图](#creative_boxplot解释以及绘图逻辑结构图)
 
-~~Now we begin~~
+~~正文开始~~
 
 ---
 
-# **Functional code interpretation**
+## **功能性代码解释**
 
-The explanation of `cal_Quantile()`,`cal_max_min()`,`find_ex_point()`,`cul_all_max_min()` and `cul_step()` in the class `myplt`
+myplt类中的cal_Quantile(),cal_max_min(),find_ex_point(),cul_all_max_min(),cul_step()函数解释。
 
-## 1. cal_Quantile()
+### 1. cal_Quantile()
 
-Source code of cal_Quantile
+代码源码
 
 ```python
 #!/usr/bin/python3
@@ -60,16 +63,10 @@ def cal_Quantile(da):
     return (p_25,p_50,p_75,da3)
 ```
 
-The input data is a single column series data `da` sorted by size.
-The first if gets `P_50` according to the median rule, that is, the median (odd number takes the ((`da` number + 1) / 2) and even number takes item (`da` number / 2)).
-Then bisection `da` to get the first half `da1`.
-Taking `da1` as the total data set and taking the median rule again, so that `p_75` is obtained.
-After that it continues to bisect `da` to get the second half of `da2`.
-According to the same rules, `p_25` is obtained by taking `da2` as the total data set.
-`da3` is the data set between `p_25` and `p_50`, which will be used later in calculating 5% (`cal_per5`) to draw complex graphs.
-The function returns three int data `p_25`, `p_50` and `p_75`, the quartile, and a series data column `da_3`.
+输入的数据为单列按大小排序后的Series数据da，第一个if按中位数规则得到p_50，即中位数（奇数取第((da个数+1)/2)项，偶数取第（da个数/2)项）。然后二等分da得到前半部分da1。以da1为总数据集按上述规则再取中位数得到p_75。然后然后二等分da得到后半部分da2。按同样规则以da2为总数据集得到p_25。da3为p_25到p_50之间的数据集，这会在后面计算5%(cal_per5)以画复杂图中会用到。
+函数返回值为三个数字p_25,p_50和p_75，即四分位数,以及一个Series数据列da3。
 
-## 2. cal_max_min()
+### 2. cal_max_min()
 
 ```python
 def cal_max_min(da,p_25,p_75):
@@ -78,11 +75,9 @@ def cal_max_min(da,p_25,p_75):
     return (ma,mi)
 ```
 
-The input data is a single column series data `da` sorted by size, and 25% and 75% of the quartile,`p_25`,`p_75`.
-The returned values are the maximum and minimum values within the reasonable range of the boxplot.
-It is used to draw the upper and lower edges of the boxplot and calculate the outliers.
+输入的数据为单列按大小排序后的Series数据da，和四分位数中的25%和75%。返回值为箱线图合理范围内的最大值和最小值。用于绘制箱线图的上边和下边，以及计算异常值。
 
-## 3. find_ex_point()
+### 3. find_ex_point()
 
 ```python
 def find_ex_point(data):
@@ -94,10 +89,9 @@ def find_ex_point(data):
     return da_ex
 ```
 
-The input data is single-layer list data, and the previous `cal_Quantile()` function will be called in the function body.
-After calculation, a single column series data is returned, and the content is the abnormal value in the data,`da_ex`.
+输入的数据为单层list数据data，在函数体内会调用之前的cal_Quantile()函数。计算后返回单列Series数据，内容为data中的异常值。
 
-## 4. cul_all_max_min()
+### 4. cul_all_max_min()
 
 ```python
 def cul_all_max_min(data_l):
@@ -105,11 +99,9 @@ def cul_all_max_min(data_l):
     return (max([max(i) for i in data_l]),min([min(i) for i in data_l]))
 ```
 
-The input data is multi-layer list `data_ l`.
-The first step is to convert all the data into int data, and then calculate the maximum and minimum values of all the data.
-Return two int data, that is, the maximum and minimum of all data, and they will be used to set the common Y-axis coordinates in `creative_boxplot()`.
+输入的数据为多层list数据data_l,第一步先将数据全部转换为int型数据，之后计算所有数据中的最大值和最小值。返回两个int型的数据，即，所有数据中的最大值和最小值，用于设定creative_boxplot()中公共y轴坐标。
 
-## 5. cul_step()
+### 5. cul_step()
 
 ```python
 def cul_step(da_ma,da_mi):
@@ -122,15 +114,13 @@ def cul_step(da_ma,da_mi):
     return step
 ```
 
-The input data are the maximum value `da_ma` and the minimum value `da_mi` in the current data column da.
-The return value is the appropriate `step` size for the y-axis interval.
-Used to set the y-axis coordinates in `creative_boxplot()`.
+输入的数据为当个数据列da中的最大值da_ma和最小值da_mi。返回值为让y轴区间合适的步长。用于设定creative_boxplot()中的y轴坐标。
 
 ---
 
-# **Explanation and logical structure diagram of info_boxplot()**
+# **info_boxplot()解释以及绘图逻辑结构图**
 
-## Source code of info_boxplot()
+## info_boxplot代码源码
 
 ```python
 def info_boxplot(ax,data_l,multiplebox=True,linecolor='black',pointcolor='black'):
@@ -155,7 +145,7 @@ def info_boxplot(ax,data_l,multiplebox=True,linecolor='black',pointcolor='black'
         ax.hlines(ma,k-0.15,k+0.15,color=linecolor,linewidth=1)
         rect = plt.Rectangle((k-0.25,p_25),0.5,p_75-p_25,linewidth=1, edgecolor=linecolor, facecolor='none')
         ax.add_patch(rect)
-        #exception
+        #异常点
         for i in da_ex.values:
             ax.text(k,i , "o",color=pointcolor, fontsize=5, verticalalignment="center",horizontalalignment='center')
             #ax.scatter(k,i,color='white', marker='o', edgecolors='black')
@@ -181,36 +171,36 @@ def info_boxplot(ax,data_l,multiplebox=True,linecolor='black',pointcolor='black'
         main_box(ax,data_l[k],multiplebox,k+1,linecolor,pointcolor)
 ```
 
-`before cal_per5`：Empty the canvas and set the x-axis ruler and label.
+`before cal_per5`：清空画布，设置x轴标尺和标签
 
-`cal_per5`：The input is the pandas interval `da3`, and the `da3` interval is equally divided into ten parts according to the number of numbers. The list type `per_5` records the nine dividing lines in the middle, which can also be understood as the y-axis scale that should be drawn. It is used to draw the 5% dividing line part of complex graph.
+`cal_per5`：输入为pandas区间da3,按个数将da3区间平分为十份，返回list类型的per_5记录的是中间的9条分界线，也可以理解为应该被绘制的y轴刻度。用于绘制复杂图的5%分界线部分。
 
-`draw_boxplot`：Input all kinds of parameters needed to draw the current box diagram, and the function is to draw a single box diagram. When `multiplebox` is `true`, nine more 5% boundaries are drawn to draw a complex box diagram.
+`draw_boxplot`：输入为绘制当个箱型图所需各种参数，作用为绘制单个箱型图。当`multiplebox`为`True`时多绘制9条5%为界的分界线，绘制复杂箱型图。
 
-`main_box`：The general manager to call various function functions. The input parameter (K+1) is the X-axis coordinate of the drawing line.
+`main_box`：用于总领调用各类功能函数。其中输入参数k+1为绘制图形中线的x轴坐标。
 
-## Logical structure diagram of info_boxplot()
+## info_boxplot逻辑结构图
 
 ```flow
-st=>start: Empty the canvas and set the X-axis
-e=>end: Data input into draw_boxplot() for drawing
-op1=>operation: The for loop makes every data entered into main_box() as a single-layer list data, and (k+1) is the x-axis scale
-op2=>operation: The main_box() first converts list data into single column Series type data, and then calls corresponding functions after sorting
-op3=>operation: Calculate the quartile int data p_25, p_50, p_75, series data da3,
-5% list data per_5,
-The maximum and minimum values of int data ma, mi in a reasonable interval,
-Outlier series data da_ex
+st=>start: 清空画布,设置x轴
+e=>end: 数据输入draw_boxplot内进行画图
+op1=>operation: for循环使每个进入main_box()的数据都为单层list数据,k+1为x轴标度
+op2=>operation: main_box()先把list数据转换为单列Series数据，排序后调用相应函数
+op3=>operation: 计算得到四分位int数据p_25,p_50,p_75,Series数据da3,
+5%list数据per_5,
+合理区间内的最大、最小值int数据ma,mi,
+异常值Series数据da_ex
 
 st->op1->op2->op3->e
 ```
 
-## Logical structure diagram of draw_boxplot()
+## draw_boxplot逻辑结构图
 
 ```flow
-st=>start: Draw vertical lines from mi to p_25 and from p_75 to ma
-e=>end: Finally, according to the multiplebox parameter, it can decide whether to draw only one median line or multiple lines according to the 5% scale
-op1=>operation: Draw a horizontal line with y value equal to mi and a horizontal line with y = ma
-op2=>operation: Draw the box in the middle part of the box
+st=>start: 绘制mi到p_25和p_75到ma的竖线
+e=>end: 最后根据multiplebox参数决定矩形框内只绘制一条中位线还是按5%比例绘制多条线
+op1=>operation: 绘制y值等于mi的水平线和y=ma的横线
+op2=>operation: 绘制箱型图中部的方形框
 op3=>operation: 根据list类型参数da_ex提供的y轴坐标用text标注的方法绘制异常值
 绘制一条从异常值的最低点到最高点的白色竖线，z轴参数设为0，以便y轴能覆盖标注形式显示的异常值
 
@@ -313,9 +303,9 @@ st->op1->op2->op3->op4->e
 
 ---
 
-# **Explanation and logical structure diagram of creative_boxplot()**
+# **creative_boxplot()解释以及绘图逻辑结构图**
 
-## Source code of creative_boxplot()
+## creative_boxplot代码源码
 
 ```python
 def creative_boxplot(ax, data_l,linecolor='black',pointcolor='black',boxcolor='lavender'):
@@ -394,36 +384,32 @@ def creative_boxplot(ax, data_l,linecolor='black',pointcolor='black',boxcolor='l
         main_box(ax,data_l[k],k+1,linecolor,pointcolor,boxcolor)
 ```
 
-`normal_his`、`draw_histobox`：refer to the hisbox code to explain the content in the same location
+`normal_his`、`draw_histobox`：参照hisbox代码解释相同位置的内容。
 
-`draw_y_axis`：scale the Y-axis of the enlarged view
+`draw_y_axis`：按照比例绘制放大图的y轴
 
-`draw_sim_box`：draw the enlarged simple box diagram
+`draw_sim_box`：绘制放大后的简单箱型图。
 
-`main_box`：the general manager to call various function functions
+`main_box`：用于总领调用各类功能函数。
 
-## Logical structure diagram of creative_boxplot()
+## creative_boxplot逻辑结构图
 
 ```flow
-st=>start: Empty the canvas and set the X-axis
-e=>end: Data input into the draw_histobox() to draw the original image,
-draw_y_axis() draws the y-axis coordinates of the enlarged drawing,
-draw_sim_box() draws enlarged box diagram
-op1=>operation: The maximum value da_ma and the minimum value da_mi of all layers are calculated
-So that, it can calculate the step size. Sets the common Y-axis of all boxes
-op2=>operation: The for loop makes each data entering main_box() as a single layer list data, The (k+1) is the X-axis scale
-op3=>operation: main_box () first converts list data into single column Series data, and then calls corresponding functions after sorting
-op4=>operation: The quartile int data type was calculated as p_25,p_50,p_75,and series data type da3,
-the maximum and minimum values of int data type ma, mi in a reasonable interval,
-The Y-axis of the enlarged drawing is step1,
-Magnification ratio of enlarged and original drawings ratio,
-Outlier series data da_ ex,
-The starting Y-axis coordinate of histogram interval is Rec_begin and histogram grid length is his_nor
+st=>start: 清空画布,设置x轴
+e=>end: 数据输入draw_histobox内进行画原图,draw_y_axis绘制放大图y轴坐标,draw_sim_box绘制放大的箱型图
+op1=>operation: 计算所有层数的最大值da_ma,最小值da_mi以此计算合适的步长step。设置所有图像公共的y轴
+op2=>operation: for循环使每个进入main_box()的数据都为单层list数据,k+1为x轴标度
+op3=>operation: main_box()先把list数据转换为单列Series数据，排序后调用相应函数
+op4=>operation: 计算得到四分位int数据p_25,p_50,p_75,Series数据da3,
+合理区间内的最大、最小值int数据ma,mi,
+放大图的y轴步长step1,放大图与原图的放大比例ratio
+异常值Series数据da_ex,
+直方图区间的起始y轴坐标Rec_begin和直方图方格长度his_nor
 
 st->op1->op2->op3->op4->e
 ```
 
-# Usage example
+# 使用示例
 
 data enter
 ![show picture,data enter](img\md_pic2.png)
