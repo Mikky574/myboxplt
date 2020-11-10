@@ -2,6 +2,15 @@
 
 ---
 
+Group 47
+
+Student(s)
+
++ Yichen Li, liyichen18@lzu.edu.cn
++ Yan Miao, miaoy2018@lzu.edu.cn
+
+---
+
 Myplt box diagram operation code explanation document and instruction
 
 Introduction: the `myplt` class of boxplot can be roughly divided into three main code blocks, `info_boxplot()`, `histobox_plot()` and `creative_ boxplot()`. I will introduce it in four parts.
@@ -219,7 +228,7 @@ st->op1->op2->op3->e
 
 ## Photo Annotate
 
-![show picture,p1](img\md_pic1.jpg)
+![show picture,p1](img/md_pic1.jpg)
 
 ---
 
@@ -433,12 +442,12 @@ st->op1->op2->op3->op4->e
 # Usage example
 
 data enter
-![show picture,data enter](img\md_pic2.png)
+![show picture,data enter](img/md_pic2.png)
 info_boxplot,True
-![show picture,info_boxplot,True](img\md_pic3.png)
+![show picture,info_boxplot,True](img/md_pic3.png)
 info_boxplot,False
-![show picture,info_boxplot,False](img\md_pic4.png)
+![show picture,info_boxplot,False](img/md_pic4.png)
 histobox_plot
-![show picture,histobox_plot](img\md_pic5.png)
+![show picture,histobox_plot](img/md_pic5.png)
 creative_boxplot
-![show picture,creative_boxplot](img\md_pic6.png)
+![show picture,creative_boxplot](img/md_pic6.png)
