@@ -1,4 +1,4 @@
-<script src="js/mermaid.full.min.js"></script>
+<script src="js/mermaid.min.js"></script>
 
 <font size="8">myplt箱线图代码解释</font><br />
 
