@@ -1,3 +1,5 @@
+<script src="js/mermaid.full.min.js"></script>
+
 <font size="8">myplt箱线图代码解释</font><br />
 
 ---
@@ -181,19 +183,16 @@ def info_boxplot(ax,data_l,multiplebox=True,linecolor='black',pointcolor='black'
 
 ## info_boxplot逻辑结构图
 
-```mermaid
-flowchat
-st=>start: 清空画布,设置x轴
-e=>end: 数据输入draw_boxplot内进行画图
-op1=>operation: for循环使每个进入main_box()的数据都为单层list数据,k+1为x轴标度
-op2=>operation: main_box()先把list数据转换为单列Series数据，排序后调用相应函数
-op3=>operation: 计算得到四分位int数据p_25,p_50,p_75,Series数据da3,
-5%list数据per_5,
-合理区间内的最大、最小值int数据ma,mi,
-异常值Series数据da_ex
-
-st->op1->op2->op3->e
-```
+<div class="mermaid">
+graph TD;
+    清空画布,设置x轴-->循环使每个进入main_box的数据都为单层list数据,k+1为x轴标度;
+    循环使每个进入main_box的数据都为单层list数据,k+1为x轴标度-->先把list数据转换为单列Series数据,排序后调用相应函数;
+    先把list数据转换为单列Series数据,排序后调用相应函数-->计算得到四分位int数据p_25,p_50,p_75,Series数据da3;
+    计算得到四分位int数据p_25,p_50,p_75,Series数据da3-->百分之五5list数据per_5;
+    百分之五5list数据per_5-->合理区间内的最大,最小值int数据ma,mi;
+    合理区间内的最大,最小值int数据ma,mi-->异常值Series数据da_ex;
+    异常值Series数据da_ex-->数据输入draw_boxplot内进行画图;
+</div>
 
 ## draw_boxplot逻辑结构图
 
@@ -211,7 +210,7 @@ st->op1->op2->op3->e
 
 ## 图片注释
 
-![show picture,p1](md_pic1.jpg)
+![show picture,p1](img/md_pic1.jpg)
 
 ---
 
