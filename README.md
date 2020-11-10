@@ -211,21 +211,21 @@ st=>start: Draw vertical lines from mi to p_25 and from p_75 to ma
 e=>end: Finally, according to the multiplebox parameter, it can decide whether to draw only one median line or multiple lines according to the 5% scale
 op1=>operation: Draw a horizontal line with y value equal to mi and a horizontal line with y = ma
 op2=>operation: Draw the box in the middle part of the box
-op3=>operation: 根据list类型参数da_ex提供的y轴坐标用text标注的方法绘制异常值
-绘制一条从异常值的最低点到最高点的白色竖线，z轴参数设为0，以便y轴能覆盖标注形式显示的异常值
+op3=>operation: According to the y-axis coordinates provided by the list type parameter da_ex, the method of text annotation is used to draw the abnormal value
+Draw a white vertical line from the lowest point to the highest point of the outlier, and set the z-axis parameter to 0, so that the y-axis can cover the abnormal value displayed in the annotation form
 
 st->op1->op2->op3->e
 ```
 
-## 图片注释
+## Photo Annotate
 
-![show picture,p1](img/md_pic1.jpg)
+![show picture,p1](img\md_pic1.jpg)
 
 ---
 
-# **histobox_plot()解释以及绘图逻辑结构图**
+# **Explanation and logical structure diagram of histobox_plot()**
 
-## histobox_plot代码源码
+## Source code of histobox_plot()
 
 ```python
 def histobox_plot(ax, data_l,linecolor='black',pointcolor='black',boxcolor='lavender'):
@@ -274,39 +274,44 @@ def histobox_plot(ax, data_l,linecolor='black',pointcolor='black',boxcolor='lave
         main_box(ax,data_l[k],k+1,linecolor,pointcolor,boxcolor)
 ```
 
-`Rec_begin`：为list数据。内容为单列全部数据da按数值十等分后的结果，从最小值开始记录。用于绘制直方图区间的起始y轴坐标。
+`Rec_begin`：Is list data. The content is the result of a single column of all data `da` divided into ten equal parts, starting from the minimum value.
+The starting Y-axis coordinate used to draw the histogram interval.
 
-`normal_his`：输入为全部数据da和list类型数据Rec_begin。作用为按Rec_begin分的十个区间进行个数统计。得到`his_l`再进行标准化，转换成[0,0.55]大小。得到标准化后的数据list`his_nor`,并返回。
+`normal_his`：Input all data `da` and list data `Rec_begin`.
+The function is to count the number of ten intervals divided by `Rec_begin`.
+Get the `his_l` and standardize it to [0,0.55].
+Get the standardized data list `his_nor` and return it.
 
-`draw_histobox`：根据输入的参数绘图。
+`draw_histobox`：Draw according to the input parameters.
 
-`main_box`：用于总领调用各类功能函数。
+`main_box`：The general manager to call various function functions.
 
-## histobox_plot逻辑结构图
+## Logical structure diagram of histobox_plot()
 
 ```flow
-st=>start: 清空画布,设置x轴
-e=>end: 数据输入draw_histobox内进行画图
-op1=>operation: for循环使每个进入main_box()的数据都为单层list数据,k+1为x轴标度
-op2=>operation: main_box()先把list数据转换为单列Series数据，排序后调用相应函数
-op3=>operation: 计算得到四分位int数据p_25,p_50,p_75,Series数据da3,
-合理区间内的最大、最小值int数据ma,mi,
-异常值Series数据da_ex,
-直方图区间的起始y轴坐标Rec_begin和直方图方格长度his_nor
+st=>start: Empty the canvas and set the X-axis
+e=>end: Data input into draw_histobox() for drawing
+op1=>operation: The for loop makes every data entered into main_box() as a single-layer list data, and (k+1) is the x-axis scale
+op2=>operation: The main_box() first converts list data into single column Series type data, and then calls corresponding functions after sorting
+op3=>operation: calculate the quartile int data type p_25, p_50, p_75, series data da3,
+The maximum and minimum values of int data ma, mi in a reasonable interval,
+Outlier series data da_ex,
+The starting Y-axis coordinate recbegin and histogram square length his_nor of histogram interval
 
 st->op1->op2->op3->e
 ```
 
-## draw_histobox逻辑结构图
+## Logical structure diagram of draw_histobox()
 
 ```flow
-st=>start: 绘制mi到ma的竖线
-e=>end: his_nor整体+0.15,使得数据集处于[0.15,0.7]之间。以此绘图
-op1=>operation: 绘制y值等于mi的水平线和y=ma的横线
-op2=>operation: 绘制左半边箱线图方框
-op3=>operation: 根据list类型参数da_ex提供的y轴坐标用text标注的方法绘制异常值
-绘制一条从异常值的最低点到最高点的白色竖线，z轴参数设为0，以便y轴能覆盖标注形式显示的异常值
-op4=>operation: 根据Rec_begin给的底边坐标和his_nor给的宽度坐标绘制直方图的矩形。
+st=>start: Draw a vertical line from mi to ma
+e=>end: The his_nor overall + 0.15, making the data set in [0.15,0.7]
+Draw
+op1=>operation: Draw a horizontal line with y value equal to mi and a horizontal line with y = ma
+op2=>operation: Draw the left half of the box diagram box
+op3=>operation: According to the y-axis coordinates provided by the list type parameter da_ex, the method of text annotation is used to draw the abnormal value
+Draw a white vertical line from the lowest point to the highest point of the outlier, and set the z-axis parameter to 0, so that the y-axis can cover the abnormal value displayed in the annotation form
+op4=>operation: Draw the rectangle of histogram according to the bottom coordinate given by Rec_begin and the width coordinate given by his_nor.
 
 st->op1->op2->op3->op4->e
 ```
@@ -423,15 +428,17 @@ The starting Y-axis coordinate of histogram interval is Rec_begin and histogram 
 st->op1->op2->op3->op4->e
 ```
 
+---
+
 # Usage example
 
 data enter
-![show picture,data enter](img/md_pic2.png)
+![show picture,data enter](img\md_pic2.png)
 info_boxplot,True
-![show picture,info_boxplot,True](img/md_pic3.png)
+![show picture,info_boxplot,True](img\md_pic3.png)
 info_boxplot,False
-![show picture,info_boxplot,False](img/md_pic4.png)
+![show picture,info_boxplot,False](img\md_pic4.png)
 histobox_plot
-![show picture,histobox_plot](img/md_pic5.png)
+![show picture,histobox_plot](img\md_pic5.png)
 creative_boxplot
-![show picture,creative_boxplot](img/md_pic6.png)
+![show picture,creative_boxplot](img\md_pic6.png)
