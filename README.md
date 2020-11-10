@@ -1,5 +1,3 @@
-<script src="js/mermaid.min.js"></script>
-
 <font size="8">myplt箱线图代码解释</font><br />
 
 ---
@@ -183,21 +181,22 @@ def info_boxplot(ax,data_l,multiplebox=True,linecolor='black',pointcolor='black'
 
 ## info_boxplot逻辑结构图
 
-<div class="mermaid">
-graph TD;
-    清空画布,设置x轴-->循环使每个进入main_box的数据都为单层list数据,k+1为x轴标度;
-    循环使每个进入main_box的数据都为单层list数据,k+1为x轴标度-->先把list数据转换为单列Series数据,排序后调用相应函数;
-    先把list数据转换为单列Series数据,排序后调用相应函数-->计算得到四分位int数据p_25,p_50,p_75,Series数据da3;
-    计算得到四分位int数据p_25,p_50,p_75,Series数据da3-->百分之五5list数据per_5;
-    百分之五5list数据per_5-->合理区间内的最大,最小值int数据ma,mi;
-    合理区间内的最大,最小值int数据ma,mi-->异常值Series数据da_ex;
-    异常值Series数据da_ex-->数据输入draw_boxplot内进行画图;
-</div>
+```flow
+st=>start: 清空画布,设置x轴
+e=>end: 数据输入draw_boxplot内进行画图
+op1=>operation: for循环使每个进入main_box()的数据都为单层list数据,k+1为x轴标度
+op2=>operation: main_box()先把list数据转换为单列Series数据，排序后调用相应函数
+op3=>operation: 计算得到四分位int数据p_25,p_50,p_75,Series数据da3,
+5%list数据per_5,
+合理区间内的最大、最小值int数据ma,mi,
+异常值Series数据da_ex
+
+st->op1->op2->op3->e
+```
 
 ## draw_boxplot逻辑结构图
 
-```mermaid
-flowchat
+```flow
 st=>start: 绘制mi到p_25和p_75到ma的竖线
 e=>end: 最后根据multiplebox参数决定矩形框内只绘制一条中位线还是按5%比例绘制多条线
 op1=>operation: 绘制y值等于mi的水平线和y=ma的横线
@@ -210,7 +209,7 @@ st->op1->op2->op3->e
 
 ## 图片注释
 
-![show picture,p1](img/md_pic1.jpg)
+![show picture,p1](img\md_pic1.jpg)
 
 ---
 
@@ -275,8 +274,7 @@ def histobox_plot(ax, data_l,linecolor='black',pointcolor='black',boxcolor='lave
 
 ## histobox_plot逻辑结构图
 
-```mermaid
-flowchat
+```flow
 st=>start: 清空画布,设置x轴
 e=>end: 数据输入draw_histobox内进行画图
 op1=>operation: for循环使每个进入main_box()的数据都为单层list数据,k+1为x轴标度
@@ -291,8 +289,7 @@ st->op1->op2->op3->e
 
 ## draw_histobox逻辑结构图
 
-```mermaid
-flowchat
+```flow
 st=>start: 绘制mi到ma的竖线
 e=>end: his_nor整体+0.15,使得数据集处于[0.15,0.7]之间。以此绘图
 op1=>operation: 绘制y值等于mi的水平线和y=ma的横线
